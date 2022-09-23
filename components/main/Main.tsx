@@ -13,7 +13,7 @@ const Main = () => {
   const [page, setPage] = useState(1);
   const [photos, setPhotos] = useState<Tphoto[]>([]);
   const { data, isValidating, error } = useSWR(
-    `api/photos/?searchQuery=${ctx?.currentSearchQuery}&page=${page}`,
+    `api/photos/?searchQuery=${ctx?.currentSearchQuery.toLowerCase()}&page=${page}`,
     fetcher,
     {
       revalidateOnFocus: false,
