@@ -1,12 +1,10 @@
-import Button from "../common/Button";
-import Input from "./Input";
+import Search from "./Search";
 
 const Header = () => {
   return (
-    <form className="flex gap-3">
-      <Input type="text" placeholder="Search images" />
-      <Button type="submit">Search</Button>
-    </form>
+    <header>
+      <Search />
+    </header>
   );
 };
 
