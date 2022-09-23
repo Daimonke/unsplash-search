@@ -13,7 +13,7 @@ cd unsplash-search
 yarn install
 ```
 
-Rename .env.example to .env and change example to your Unsplash api access key
+Rename .env.example to .env and change client_id to your Unsplash api access key
 
 Run development server
 

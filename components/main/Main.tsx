@@ -55,14 +55,10 @@ const Main = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   });
 
-  if (error)
-    return (
-      <Notification>
-        Request limit have been reached. Please wait...
-      </Notification>
-    );
-  if (data?.data.results.length === 0)
+  if (error) return <Notification>Something wrong...</Notification>;
+  if (data?.data.results.length === 0) {
     return <Notification>No photos found..</Notification>;
+  }
   return (
     <main className="mt-4 mb-16" ref={main}>
       {photos.length > 0 && (

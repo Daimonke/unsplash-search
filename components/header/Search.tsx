@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { photosCtx } from "../../context/PhotosCtx";
 import Button from "../common/Button";
 import Input from "../common/Input";
@@ -12,7 +12,10 @@ const Search = () => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!query) return;
+    setInputOnFocus(false);
     ctx?.handleSearchQuery(query);
+    const input = document.querySelector("#searchInput") as HTMLInputElement;
+    input.blur();
   };
   const parent = useRef(null);
 
@@ -24,20 +27,19 @@ const Search = () => {
     if (ctx?.currentSearchQuery) setQuery(ctx?.currentSearchQuery);
   }, [ctx?.currentSearchQuery]);
   return (
-    <div
-      ref={parent}
-      onBlur={() => setInputOnFocus(false)}
-      onFocus={() => setInputOnFocus(true)}
-    >
+    <div ref={parent}>
       <form
         className="flex gap-3 sticky left-0 right-0"
         onSubmit={handleSearch}
       >
         <Input
+          id="searchInput"
           type="text"
           placeholder="Search images"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onBlur={() => setInputOnFocus(false)}
+          onFocus={() => setInputOnFocus(true)}
         />
         <Button type="submit">Search</Button>
       </form>
