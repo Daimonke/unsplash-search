@@ -33,17 +33,41 @@ export type TphotosRes = {
 };
 
 export type TphotosCtx = {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
+  currentSearchQuery: string;
+  searchHistory: string[];
+  handleSearchQuery: (query: string) => void;
+  isQueryNew: boolean;
+  setIsQueryNew: (value: boolean) => void;
 };
 
 export const photosCtx = createContext<TphotosCtx | null>(null);
 
 const PhotosProvider = ({ children }: { children: React.ReactNode }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [currentSearchQuery, setCurrentSearchQuery] = useState("dogs");
+  const [isQueryNew, setIsQueryNew] = useState(false);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+
+  const handleSearchQuery = (query: string) => {
+    if (query === searchHistory[0]) return;
+    setCurrentSearchQuery(query);
+    setIsQueryNew(true);
+    if (searchHistory.length < 5) {
+      setSearchHistory([query, ...searchHistory]);
+    } else {
+      const newHistory = searchHistory;
+      newHistory.pop();
+      newHistory.unshift(query);
+      setSearchHistory(newHistory);
+    }
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+  };
+
   const ctxInitialValue: TphotosCtx = {
-    searchQuery,
-    setSearchQuery,
+    currentSearchQuery,
+    searchHistory,
+    handleSearchQuery,
+    isQueryNew,
+    setIsQueryNew,
   };
 
   return (
