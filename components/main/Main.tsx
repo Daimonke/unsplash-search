@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Image from "next/image";
 import { useContext, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { photosCtx, Tphoto } from "../../context/PhotosCtx";
@@ -15,7 +14,10 @@ const Main = () => {
   const [photos, setPhotos] = useState<Tphoto[]>([]);
   const { data, isValidating, error } = useSWR(
     `api/photos/?searchQuery=${ctx?.currentSearchQuery}&page=${page}`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
   );
   const loadMorePhotos = () => {
     setPage(page + 1);
@@ -24,7 +26,6 @@ const Main = () => {
   useEffect(() => {
     // remove old images for smooth new images load
     if (ctx?.isQueryNew) setPhotos([]);
-    if (error) console.log(error);
     if (data) {
       if (ctx?.isQueryNew) {
         ctx.setIsQueryNew(false);
@@ -37,12 +38,14 @@ const Main = () => {
 
   const handleScroll = () => {
     const mainRef = main as any;
-    if (mainRef?.current.offsetHeight) {
+    if (mainRef) {
       if (
         window.scrollY > mainRef.current.offsetHeight - 1500 &&
         !isValidating
       ) {
-        loadMorePhotos();
+        if (data?.data.total_pages > page) {
+          loadMorePhotos();
+        }
       }
     }
   };
@@ -51,6 +54,7 @@ const Main = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   });
+
   if (error)
     return (
       <Notification>

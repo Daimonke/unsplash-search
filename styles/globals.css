@@ -9,10 +9,24 @@
 .autoGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    grid-template-rows: repeat(auto-fit, minmax(400px, 1fr));
     align-items: center;
 }
 
 body {
     height: 101vh;
+}
+
+.slide-in {
+    animation: slide-in forwards 1s;
+    overflow: hidden;
+}
+
+@keyframes slide-in {
+    from {
+        transform:translateY(0);
+      }
+    
+      to {
+        transform:translateY(100);
+      }
 }

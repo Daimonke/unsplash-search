@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 export type Tphoto = {
   id: string;
@@ -43,7 +43,7 @@ export type TphotosCtx = {
 export const photosCtx = createContext<TphotosCtx | null>(null);
 
 const PhotosProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentSearchQuery, setCurrentSearchQuery] = useState("dogs");
+  const [currentSearchQuery, setCurrentSearchQuery] = useState("");
   const [isQueryNew, setIsQueryNew] = useState(false);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
 
@@ -51,7 +51,12 @@ const PhotosProvider = ({ children }: { children: React.ReactNode }) => {
     if (query === searchHistory[0]) return;
     setCurrentSearchQuery(query);
     setIsQueryNew(true);
-    if (searchHistory.length < 5) {
+    if (searchHistory.includes(query)) {
+      const newHistory = searchHistory.filter((item) => item !== query);
+      newHistory.unshift(query);
+      setSearchHistory(newHistory);
+      localStorage.setItem("searchHistory", JSON.stringify(newHistory));
+    } else if (searchHistory.length < 5) {
       const newHistory = [query, ...searchHistory];
       setSearchHistory(newHistory);
       localStorage.setItem("searchHistory", JSON.stringify(newHistory));
@@ -71,7 +76,16 @@ const PhotosProvider = ({ children }: { children: React.ReactNode }) => {
     isQueryNew,
     setIsQueryNew,
   };
-
+  useEffect(() => {
+    const history = localStorage.getItem("searchHistory");
+    if (history) {
+      const parsedHistory = JSON.parse(history);
+      setCurrentSearchQuery(parsedHistory[0]);
+      setSearchHistory(parsedHistory);
+    } else {
+      setCurrentSearchQuery("dogs");
+    }
+  }, []);
   return (
     <photosCtx.Provider value={ctxInitialValue}>{children}</photosCtx.Provider>
   );
