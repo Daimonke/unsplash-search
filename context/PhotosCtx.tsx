@@ -1,66 +1,49 @@
-import axios from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 
-export type Tphotos = {
-  data: {
-    total: number;
-    total_pages: number;
-    results: unknown[];
+export type Tphoto = {
+  id: string;
+  created_at: string;
+  width: number;
+  height: number;
+  color: string;
+  blur_hash: string;
+  likes: number;
+  liked_by_user: boolean;
+  description: string;
+  user: any;
+  current_user_collections: any;
+  urls: {
+    raw: string;
+    full: string;
+    regular: string;
+    small: string;
+    thumb: string;
   };
-  error: string;
+  links: {
+    self: string;
+    html: string;
+    download: string;
+  };
+};
+
+export type TphotosRes = {
+  total: number;
+  total_pages: number;
+  results: Tphoto[];
 };
 
 export type TphotosCtx = {
-  photos: Tphotos;
-  searchPhotos: (query: string, pageNumber?: number) => void;
-  loading: boolean;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
 };
 
 export const photosCtx = createContext<TphotosCtx | null>(null);
 
-const PhotosCtx = ({ children }: { children: React.ReactNode }) => {
-  const [loading, setLoading] = useState(false);
-  const [photos, setPhotos] = useState<Tphotos>({
-    data: {
-      total: 0,
-      total_pages: 0,
-      results: [],
-    },
-    error: "",
-  });
-
-  const searchPhotos = async (query: string, pageNumber?: number) => {
-    setLoading(true);
-    const page = pageNumber ? pageNumber : 1;
-    try {
-      const { data } = await axios(
-        `api/photos/?searchQuery=${query}&page=${page}`
-      );
-      if (data.length === 0) {
-        setPhotos({
-          data: data,
-          error: "No photos found",
-        });
-      } else {
-        setPhotos({
-          data: data,
-          error: "",
-        });
-      }
-    } catch (err) {
-      setPhotos({
-        ...photos,
-        error: "Something wrong",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
+const PhotosProvider = ({ children }: { children: React.ReactNode }) => {
+  const [searchQuery, setSearchQuery] = useState("");
   const ctxInitialValue: TphotosCtx = {
-    photos,
-    searchPhotos,
-    loading,
+    searchQuery,
+    setSearchQuery,
   };
 
   return (
@@ -68,4 +51,4 @@ const PhotosCtx = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default PhotosCtx;
+export default PhotosProvider;

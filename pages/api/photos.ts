@@ -10,7 +10,7 @@ export default async function handler(
     const page = req.query.page ? req.query.page : "1";
     const searchQuery = req.query.searchQuery;
     const { data } = await axios.get(
-      `https://api.unsplash.com/search/photos?page=${page}&query=${searchQuery}&client_id=${process.env.client_id}`
+      `https://api.unsplash.com/search/photos?page=${page}&query=${searchQuery}&client_id=${process.env.client_id}&w=400&fit=max&h=400&per_page=20`
     );
     res.status(200).json(data);
   } catch (err) {
