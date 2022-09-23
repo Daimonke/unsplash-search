@@ -12,3 +12,7 @@
     grid-template-rows: repeat(auto-fit, minmax(400px, 1fr));
     align-items: center;
 }
+
+body {
+    height: 101vh;
+}

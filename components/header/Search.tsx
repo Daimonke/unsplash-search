@@ -8,6 +8,7 @@ const Search = () => {
   const ctx = useContext(photosCtx);
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!query) return;
     ctx?.handleSearchQuery(query);
     setQuery("");
   };

@@ -52,14 +52,16 @@ const PhotosProvider = ({ children }: { children: React.ReactNode }) => {
     setCurrentSearchQuery(query);
     setIsQueryNew(true);
     if (searchHistory.length < 5) {
-      setSearchHistory([query, ...searchHistory]);
+      const newHistory = [query, ...searchHistory];
+      setSearchHistory(newHistory);
+      localStorage.setItem("searchHistory", JSON.stringify(newHistory));
     } else {
       const newHistory = searchHistory;
       newHistory.pop();
       newHistory.unshift(query);
       setSearchHistory(newHistory);
+      localStorage.setItem("searchHistory", JSON.stringify(newHistory));
     }
-    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   };
 
   const ctxInitialValue: TphotosCtx = {
