@@ -6,7 +6,7 @@ import PhotosCtx from "../context/PhotosCtx";
 
 const Home: NextPage = () => {
   return (
-    <div className="max-w-7xl m-auto p-2">
+    <div className="max-w-7xl m-auto">
       <Head>
         <title>Images search</title>
         <meta

@@ -8,10 +8,17 @@
 
 .autoGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     align-items: center;
+}
+
+@media (min-width: 960px) {
+    .autoGrid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
 }
 
 body {
     height: 101vh;
+    padding: 8px;
 }
