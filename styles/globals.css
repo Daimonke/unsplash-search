@@ -15,18 +15,3 @@
 body {
     height: 101vh;
 }
-
-.slide-in {
-    animation: slide-in forwards 1s;
-    overflow: hidden;
-}
-
-@keyframes slide-in {
-    from {
-        transform:translateY(0);
-      }
-    
-      to {
-        transform:translateY(100);
-      }
-}
