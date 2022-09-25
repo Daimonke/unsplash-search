@@ -2,7 +2,7 @@ import Search from "./Search";
 
 const Header = () => {
   return (
-    <header>
+    <header role="header">
       <Search />
     </header>
   );

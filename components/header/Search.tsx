@@ -27,7 +27,7 @@ const Search = () => {
     if (ctx?.currentSearchQuery) setQuery(ctx?.currentSearchQuery);
   }, [ctx?.currentSearchQuery]);
   return (
-    <div ref={parent}>
+    <div ref={parent} role="search">
       <form
         className="flex gap-3 sticky left-0 right-0"
         onSubmit={handleSearch}

@@ -8,7 +8,6 @@ type Props = {
 const SearchHistoryItem = ({ item }: Props) => {
   const ctx = useContext(photosCtx);
   const handleClick = () => {
-    console.log(item);
     ctx?.handleSearchQuery(item);
   };
   return (

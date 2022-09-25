@@ -17,6 +17,7 @@ const GridItem = ({ item, ...options }: Props) => {
       blurDataURL={item.urls.thumb}
       placeholder="blur"
       priority
+      unoptimized
       {...options}
     />
   );
