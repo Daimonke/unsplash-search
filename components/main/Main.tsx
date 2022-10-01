@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { photosCtx, Tphoto } from "../../context/PhotosCtx";
 import fetcher from "../../helpers/fetcher";
+import removeDuplicates from "../../helpers/removeDuplicates";
 import Notification from "../common/Notification";
 import Spinner from "../common/Spinner";
 import GridItem from "./GridItem";
@@ -30,11 +31,12 @@ const Main = () => {
     if (error) return;
     if (data) {
       if (ctx?.isQueryNew) {
-        ctx.setIsQueryNew(false);
         setPhotos(data.data.results);
+        ctx.setIsQueryNew(false);
       } else {
-        setPhotos([...photos, ...data.data.results]);
+        setPhotos(removeDuplicates([...photos, ...data.data.results], "id"));
       }
+      console.log(data);
     }
   }, [data]);
 

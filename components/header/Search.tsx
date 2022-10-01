@@ -40,6 +40,7 @@ const Search = () => {
           onChange={(e) => setQuery(e.target.value)}
           onBlur={() => setInputOnFocus(false)}
           onFocus={() => setInputOnFocus(true)}
+          autoComplete="off"
         />
         <Button type="submit">Search</Button>
       </form>

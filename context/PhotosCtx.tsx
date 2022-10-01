@@ -49,8 +49,8 @@ const PhotosProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleSearchQuery = (query: string) => {
     if (query === searchHistory[0]) return;
-    setCurrentSearchQuery(query);
     setIsQueryNew(true);
+    setCurrentSearchQuery(query);
     if (searchHistory.includes(query)) {
       const newHistory = searchHistory.filter((item) => item !== query);
       newHistory.unshift(query);
