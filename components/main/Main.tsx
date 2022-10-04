@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { photosCtx } from "../../context/PhotosCtx";
 import usePhotos from "../../helpers/hooks/usePhotos";
 import Notification from "../common/Notification";
@@ -8,8 +8,28 @@ import GridItem from "./GridItem";
 const Main = () => {
   const ref = useRef(null);
   const ctx = useContext(photosCtx);
-  const { isValidating, error, photos } = usePhotos({
-    ref,
+  const [page, setPage] = useState(1);
+  const { photos, isValidating, error, data } = usePhotos({
+    page,
+  });
+
+  const handleScroll = () => {
+    const mainRef = ref as any;
+    if (mainRef && !error) {
+      if (
+        window.scrollY > mainRef.current.offsetHeight - 1500 &&
+        !isValidating
+      ) {
+        if (data && data.data.total_pages > page) {
+          setPage(page + 1);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   });
 
   if (error && photos.length === 0)
